@@ -7,10 +7,7 @@ import android.os.Bundle
 import android.support.constraint.ConstraintSet
 import android.support.transition.TransitionManager
 import android.support.v4.app.Fragment
-import android.view.GestureDetector
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.RadioButton
 import android.widget.Toast
 import com.brx.ctcomponents.R
@@ -49,8 +46,40 @@ class MainFragment : Fragment() {
             motionTransition()
             alphaTransition()
         }
-
         addGestureEvents()
+
+        // animacao para selecao por clique
+        toggle2.setOnCheckedChangeListener { radioGroup, checkedItem ->
+            val item: RadioButton = radioGroup.findViewById(checkedItem)
+            Toast.makeText(activity, "${item.text} selected", Toast.LENGTH_SHORT).show()
+            highlightSelected2(checkedItem, item)
+
+            if (item.id == R.id.first2) {
+                motionLayout.transitionToStart()
+            } else {
+                motionLayout.transitionToEnd()
+            }
+        }
+
+        // propaga gestures para o MotionLayout sobreposto
+        first2.setOnTouchListener { view, motionEvent ->
+            if (motionEvent.action == MotionEvent.ACTION_MOVE)
+                motionLayout.onTouchEvent(motionEvent)
+            else if (motionEvent.action == MotionEvent.ACTION_UP || motionEvent.action == MotionEvent.ACTION_UP)
+                motionLayout.onTouchEvent(motionEvent)
+            else view.onTouchEvent(motionEvent)
+
+            false
+        }
+
+        // propaga gestures para o MotionLayout sobreposto
+        second2.setOnTouchListener { view, motionEvent ->
+            if (motionEvent.action == MotionEvent.ACTION_MOVE || motionEvent.action == MotionEvent.ACTION_UP)
+                motionLayout.onTouchEvent(motionEvent)
+            else view.onTouchEvent(motionEvent)
+
+            false
+        }
     }
 
     // Destaca o elemento selecionado (bold)
@@ -60,6 +89,16 @@ class MainFragment : Fragment() {
             second.setTypeface(null, Typeface.NORMAL)
         } else {
             first.setTypeface(null, Typeface.NORMAL)
+            item.setTypeface(null, Typeface.BOLD)
+        }
+    }
+
+    private fun highlightSelected2(checkedItem: Int, item: RadioButton) {
+        if (checkedItem == R.id.first2) {
+            item.setTypeface(null, Typeface.BOLD)
+            second2.setTypeface(null, Typeface.NORMAL)
+        } else {
+            first2.setTypeface(null, Typeface.NORMAL)
             item.setTypeface(null, Typeface.BOLD)
         }
     }
@@ -89,6 +128,7 @@ class MainFragment : Fragment() {
 
     // Realia a animação lateral enter os estados
     private fun motionTransition() {
+        // transition between two layouts(just layout attribs)
         TransitionManager.beginDelayedTransition(root)
         val constraint = if (set) constraint1 else constraint2
         constraint.applyTo(root)

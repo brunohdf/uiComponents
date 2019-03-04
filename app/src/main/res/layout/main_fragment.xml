@@ -83,4 +83,62 @@
                 android:background="@android:color/transparent"/>
     </RadioGroup>
 
+    <android.support.constraint.motion.MotionLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/motionLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:showPaths="true"
+            android:background="@drawable/tab_background"
+            app:layout_constraintTop_toBottomOf="@+id/toggle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp"
+            app:layoutDescription="@xml/scene">
+
+        <android.support.constraint.utils.ImageFilterView
+                android:id="@+id/image"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/tab_background_selected"
+                app:altSrc="@drawable/tab_background_selected2"/>
+
+    </android.support.constraint.motion.MotionLayout>
+
+    <RadioGroup
+            android:id="@+id/toggle2"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:checkedButton="@+id/first2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/motionLayout">
+
+        <RadioButton
+                android:id="@+id/first2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:gravity="center"
+                android:text="Primeiro"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:background="@android:color/transparent"/>
+
+        <RadioButton
+                android:id="@+id/second2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:gravity="center"
+                android:text="Segundo"
+                android:textColor="@color/white"
+                android:background="@android:color/transparent"/>
+    </RadioGroup>
+
 </android.support.constraint.ConstraintLayout>
