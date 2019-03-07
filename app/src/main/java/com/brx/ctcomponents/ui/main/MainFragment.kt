@@ -1,17 +1,23 @@
 package com.brx.ctcomponents.ui.main
 
+import android.animation.AnimatorInflater
+import android.animation.AnimatorSet
+import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.arch.lifecycle.ViewModelProviders
+import android.graphics.Point
 import android.graphics.Typeface
 import android.os.Bundle
 import android.support.constraint.ConstraintSet
 import android.support.transition.TransitionManager
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.view.*
 import android.widget.RadioButton
 import android.widget.Toast
 import com.brx.ctcomponents.R
 import kotlinx.android.synthetic.main.main_fragment.*
+
 
 class MainFragment : Fragment() {
 
@@ -79,6 +85,42 @@ class MainFragment : Fragment() {
             else view.onTouchEvent(motionEvent)
 
             false
+        }
+
+
+        // View Animation - bounce?
+        var leftRight = true
+        imageView.setOnClickListener {
+
+            val display = activity?.windowManager?.defaultDisplay
+            val size = Point()
+            display?.getSize(size)
+
+            val containerRightEdge = main.width - main.paddingRight
+            val imgWidth = imageView.width
+            val imgUltimateX = if (leftRight) (containerRightEdge - imgWidth) else 0
+
+            val posAnim = imageView.animate()
+            posAnim.x(imgUltimateX.toFloat()).setDuration(1000).start()
+            //
+            val startColor =
+                ContextCompat.getColor(context!!, if (leftRight) R.color.lightBlue else R.color.lightOrange)
+            val endColor = ContextCompat.getColor(context!!, if (leftRight) R.color.lightOrange else R.color.lightBlue)
+            val bgAnim = ValueAnimator.ofObject(ArgbEvaluator(), startColor, endColor)
+            bgAnim.duration = 1000
+            bgAnim.addUpdateListener { animation ->
+                imageView.setColorFilter(animation.animatedValue as Int)
+            }
+            bgAnim.start()
+            leftRight = !leftRight
+        }
+
+
+        // Property Animation - Transição de cor / movimento até o limite
+        imageView2.setOnClickListener {
+            val set = AnimatorInflater.loadAnimator(context, R.animator.anim) as AnimatorSet
+            set.setTarget(imageView2)
+            set.start()
         }
     }
 
